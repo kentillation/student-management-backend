@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=${SA_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    restart: unless-stopped
+
+  app:
+    build: .
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=StudentDB;User Id=sa;Password=${SA_PASSWORD}
+      - SEED_ADMIN_PASSWORD=${SEED_ADMIN_PASSWORD}
+      - SWAGGER_USER=${SWAGGER_USER}
+      - SWAGGER_PASSWORD=${SWAGGER_PASSWORD}
+    ports:
+      - "8080:80"
+    depends_on:
+      - mssql
+    restart: unless-stopped

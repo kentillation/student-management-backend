@@ -1,0 +1,14 @@
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\bin\Debug\net10.0\Inspect.exe
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\bin\Debug\net10.0\Inspect.deps.json
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\bin\Debug\net10.0\Inspect.runtimeconfig.json
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\bin\Debug\net10.0\Inspect.dll
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\bin\Debug\net10.0\Inspect.pdb
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\Inspect.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\Inspect.AssemblyInfoInputs.cache
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\Inspect.AssemblyInfo.cs
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\Inspect.csproj.CoreCompileInputs.cache
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\Inspect.dll
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\refint\Inspect.dll
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\Inspect.pdb
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\Inspect.genruntimeconfig.cache
+C:\Users\LAPTOP\Desktop\Kent\Projects\.Net\StudentManagementAPI\.tools\inspect\obj\Debug\net10.0\ref\Inspect.dll
