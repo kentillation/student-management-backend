@@ -1,6 +1,500 @@
-@StudentManagementAPI_HostAddress = http://localhost:5179
+### Student Management API - HTTP Request File
+### Use this file with Visual Studio's built-in HTTP file support or REST Client extension
+### Base URL: https://localhost:7100
 
-GET {{StudentManagementAPI_HostAddress}}/weatherforecast/
-Accept: application/json
+@baseUrl = https://localhost:7100
+@apiUrl = {{baseUrl}}/api
 
-###
+### ========================================
+### AUTHENTICATION ENDPOINTS
+### ========================================
+
+### 1. Register a New User
+# @name register
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "password": "",
+  "confirmPassword": ""
+}
+
+### 2. Login User
+# @name login
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+### 3. Login as Admin User
+# @name adminLogin
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+### 4. Login as Teacher User (Create one first via registration)
+# @name teacherLogin
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+### ========================================
+### TOKEN MANAGEMENT
+### ========================================
+
+### 5. Get Current User Info (Requires Token)
+# @name getCurrentUser
+GET {{apiUrl}}/auth/me
+Authorization: Bearer {{authToken}}
+
+### 6. Refresh Token
+# @name refreshToken
+POST {{apiUrl}}/auth/refresh-token
+Content-Type: application/json
+
+{
+  "token": "{{authToken}}",
+  "refreshToken": "{{refreshToken}}"
+}
+
+### 7. Validate Token
+# @name validateToken
+POST {{apiUrl}}/auth/validate-token
+Content-Type: application/json
+
+"{{authToken}}"
+
+### 8. Change Password (Requires Token)
+# @name changePassword
+POST {{apiUrl}}/auth/change-password
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "currentPassword": "",
+  "newPassword": "",
+  "confirmPassword": ""
+}
+
+### 9. Forgot Password
+# @name forgotPassword
+POST {{apiUrl}}/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": ""
+}
+
+### 10. Reset Password (Get token from email)
+# @name resetPassword
+POST {{apiUrl}}/auth/reset-password
+Content-Type: application/json
+
+{
+  "email": "",
+  "token": "{{resetToken}}",
+  "newPassword": "",
+  "confirmPassword": ""
+}
+
+### 11. Logout (Requires Token)
+# @name logout
+POST {{apiUrl}}/auth/logout
+Authorization: Bearer {{authToken}}
+
+### ========================================
+### STUDENT CRUD OPERATIONS
+### ========================================
+
+### 12. Get All Students (Requires Admin/Teacher Role)
+# @name getAllStudents
+GET {{apiUrl}}/students
+Authorization: Bearer {{authToken}}
+
+### 13. Get Student by ID (Requires Token)
+# @name getStudentById
+GET {{apiUrl}}/students/1
+Authorization: Bearer {{authToken}}
+
+### 14. Create New Student (Requires Admin Role)
+# @name createStudent
+POST {{apiUrl}}/students
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "phone": "",
+  "course": "",
+  "enrollmentDate": "",
+  "gpa": 3.7
+}
+
+### 15. Update Student (Requires Admin/Teacher Role)
+# @name updateStudent
+PUT {{apiUrl}}/students/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "phone": "",
+  "course": "",
+  "enrollmentDate": "",
+  "gpa": 
+}
+
+### 16. Delete Student (Requires Admin Role)
+# @name deleteStudent
+DELETE {{apiUrl}}/students/5
+Authorization: Bearer {{authToken}}
+
+### ========================================
+### SEARCH AND FILTERS
+### ========================================
+
+### 17. Search Students with Filters
+# @name searchStudents
+GET {{apiUrl}}/students/search?searchTerm=John&course=Computer%20Science&minGPA=3.0&maxGPA=4.0
+Authorization: Bearer {{authToken}}
+
+### 18. Get Distinct Courses
+# @name getCourses
+GET {{apiUrl}}/students/courses
+Authorization: Bearer {{authToken}}
+
+### ========================================
+### PAGINATION
+### ========================================
+
+### 19. Get Paginated Students
+# @name getPaginatedStudents
+GET {{apiUrl}}/students/paginated?pageNumber=1&pageSize=10&sortBy=firstName&sortDescending=false
+Authorization: Bearer {{authToken}}
+
+### 20. Get Paginated Students with Filters
+# @name getPaginatedStudentsFiltered
+GET {{apiUrl}}/students/paginated?pageNumber=1&pageSize=5&searchTerm=Computer&course=Computer%20Science&minGPA=3.5
+Authorization: Bearer {{authToken}}
+
+### ========================================
+### EXPORT ENDPOINTS
+### ========================================
+
+### 21. Export Students to CSV (Requires Admin Role)
+# @name exportCsv
+GET {{apiUrl}}/export/csv
+Authorization: Bearer {{authToken}}
+
+### 22. Export Students to CSV by Course
+# @name exportCsvByCourse
+GET {{apiUrl}}/export/csv?course=Computer%20Science
+Authorization: Bearer {{authToken}}
+
+### 23. Export Students to Excel (Requires Admin Role)
+# @name exportExcel
+GET {{apiUrl}}/export/excel
+Authorization: Bearer {{authToken}}
+
+### 24. Export Students to Excel by Course
+# @name exportExcelByCourse
+GET {{apiUrl}}/export/excel?course=Mathematics
+Authorization: Bearer {{authToken}}
+
+### ========================================
+### TOKEN REVOCATION
+### ========================================
+
+### 25. Revoke Refresh Token (Requires Token)
+# @name revokeToken
+POST {{apiUrl}}/auth/revoke-token
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+"{{refreshToken}}"
+
+### ========================================
+### HELPER REQUESTS - Store Tokens for Subsequent Requests
+### ========================================
+
+### Store Auth Token from Login Response
+# @name storeAuthToken
+@authToken = {{login.response.body.data.token}}
+@refreshToken = {{login.response.body.data.refreshToken}}
+
+### Store Admin Token from Admin Login Response
+# @name storeAdminToken
+@adminToken = {{adminLogin.response.body.data.token}}
+@adminRefreshToken = {{adminLogin.response.body.data.refreshToken}}
+
+### ========================================
+### TEST SCENARIOS - Complete Workflows
+### ========================================
+
+### Scenario 1: Complete Authentication Flow
+### Step 1: Register User
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "password": "",
+  "confirmPassword": ""
+}
+
+### Step 2: Login User
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+### Step 3: Get User Info (Using token from step 2)
+GET {{apiUrl}}/auth/me
+Authorization: Bearer {{authToken}}
+
+### Step 4: Refresh Token
+POST {{apiUrl}}/auth/refresh-token
+Content-Type: application/json
+
+{
+  "token": "{{authToken}}",
+  "refreshToken": "{{refreshToken}}"
+}
+
+### Step 5: Logout
+POST {{apiUrl}}/auth/logout
+Authorization: Bearer {{authToken}}
+
+### Scenario 2: Complete Student CRUD Flow (Admin)
+### Step 1: Login as Admin
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+### Step 2: Create Student
+POST {{apiUrl}}/students
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "phone": "",
+  "course": "",
+  "enrollmentDate": "",
+  "gpa": 
+}
+
+### Step 3: Get All Students
+GET {{apiUrl}}/students
+Authorization: Bearer {{adminToken}}
+
+### Step 4: Update Student
+PUT {{apiUrl}}/students/3
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "phone": "",
+  "course": "",
+  "enrollmentDate": "",
+  "gpa": 
+}
+
+### Step 5: Delete Student
+DELETE {{apiUrl}}/students/3
+Authorization: Bearer {{adminToken}}
+
+### Scenario 3: Search and Export Flow
+### Step 1: Login as Admin
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+### Step 2: Search Students
+GET {{apiUrl}}/students/search?searchTerm=Computer&minGPA=3.0
+Authorization: Bearer {{adminToken}}
+
+### Step 3: Export Results to CSV
+GET {{apiUrl}}/export/csv?course=Computer%20Science
+Authorization: Bearer {{adminToken}}
+
+### Step 4: Export Results to Excel
+GET {{apiUrl}}/export/excel
+Authorization: Bearer {{adminToken}}
+
+### ========================================
+### ERROR TESTING SCENARIOS
+### ========================================
+
+### Error 1: Login with Invalid Credentials
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+### Error 2: Register with Existing Email
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "password": "",
+  "confirmPassword": ""
+}
+
+### Error 3: Access Without Token
+GET {{apiUrl}}/students
+
+### Error 4: Access with Invalid Token
+GET {{apiUrl}}/students
+Authorization: Bearer invalid_token_here
+
+### Error 5: Get Non-existent Student
+GET {{apiUrl}}/students/999
+Authorization: Bearer {{authToken}}
+
+### Error 6: Update with ID Mismatch
+PUT {{apiUrl}}/students/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "phone": "",
+  "course": "",
+  "enrollmentDate": "",
+  "gpa": 
+}
+
+### Error 7: Create Student with Invalid Data
+POST {{apiUrl}}/students
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "phone": "",
+  "course": "",
+  "enrollmentDate": "",
+  "gpa": 
+}
+
+### Error 8: Delete Non-existent Student
+DELETE {{apiUrl}}/students/999
+Authorization: Bearer {{authToken}}
+
+### ========================================
+### PERFORMANCE TESTING
+### ========================================
+
+### Performance Test: Get All Students (Large Dataset)
+GET {{apiUrl}}/students
+Authorization: Bearer {{authToken}}
+
+### Performance Test: Search with Multiple Filters
+GET {{apiUrl}}/students/search?searchTerm=a&course=Computer%20Science&minGPA=2.0&maxGPA=4.0
+Authorization: Bearer {{authToken}}
+
+### Performance Test: Paginated Request
+GET {{apiUrl}}/students/paginated?pageNumber=5&pageSize=50
+Authorization: Bearer {{authToken}}
+
+### ========================================
+### BULK OPERATIONS TESTING
+### ========================================
+
+### Bulk Create Students (Run multiple times with different data)
+POST {{apiUrl}}/students
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "firstName": "Bulk",
+  "lastName": "Student{{$randomInt 1 1000}}",
+  "email": "bulk.student{{$randomInt 1 1000}}@example.com",
+  "phone": "555-{{$randomInt 100 999}}-{{$randomInt 1000 9999}}",
+  "course": "",
+  "enrollmentDate": "",
+  "gpa": {{$randomFloat 2.0 4.0}}
+}
+
+### ========================================
+### ROLE-BASED ACCESS TESTING
+### ========================================
+
+### Test 1: Student Role Access
+# First login as student, then try to access admin endpoints
+GET {{apiUrl}}/students
+Authorization: Bearer {{authToken}}
+
+### Test 2: Teacher Role Access
+# Login as teacher and try to create/delete students
+POST {{apiUrl}}/students
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "phone": "",
+  "course": "",
+  "enrollmentDate": "",
+  "gpa": 
+}
+
+### Test 3: Admin Role Access
+# Login as admin and access all endpoints
+GET {{apiUrl}}/students
+Authorization: Bearer {{adminToken}}
+
+DELETE {{apiUrl}}/students/1
+Authorization: Bearer {{adminToken}}
